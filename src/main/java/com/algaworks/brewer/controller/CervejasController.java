@@ -1,8 +1,15 @@
 package com.algaworks.brewer.controller;
 
+import com.algaworks.brewer.model.Cerveja;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.naming.Binding;
+import javax.validation.Valid;
 
 @Controller
 public class CervejasController {
@@ -13,7 +20,16 @@ public class CervejasController {
     }
 
     @RequestMapping(value = "/cervejas/novo", method = RequestMethod.POST)
-    public void cadastrar(){
-        //teste
+    public String cadastrar(@Valid Cerveja cerveja, BindingResult result, Model model, RedirectAttributes attributes){
+
+        if(result.hasErrors()){
+            model.addAttribute("mensagem", "Erro no formulário");
+            System.out.println(">>> campo vazio");
+            return "cerveja/CadastroCerveja";
+        }
+
+        attributes.addFlashAttribute("mensagem", "Cerveja salva com sucesso!");
+        System.out.println(cerveja.getSku());
+        return "redirect:/cervejas/novo";
     }
 }

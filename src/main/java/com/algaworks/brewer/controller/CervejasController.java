@@ -15,7 +15,7 @@ import javax.validation.Valid;
 public class CervejasController {
 
     @RequestMapping("/cervejas/novo")
-    public String novo(){
+    public String novo(Cerveja cerveja){
         return "cerveja/CadastroCerveja";
     }
 
@@ -23,13 +23,10 @@ public class CervejasController {
     public String cadastrar(@Valid Cerveja cerveja, BindingResult result, Model model, RedirectAttributes attributes){
 
         if(result.hasErrors()){
-            model.addAttribute("mensagem", "Erro no formulário");
-            System.out.println(">>> campo vazio");
-            return "cerveja/CadastroCerveja";
+            return novo(cerveja);
         }
 
         attributes.addFlashAttribute("mensagem", "Cerveja salva com sucesso!");
-        System.out.println(cerveja.getSku());
         return "redirect:/cervejas/novo";
     }
 }
